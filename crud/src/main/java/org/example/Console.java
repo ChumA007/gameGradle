@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+
+//реализовал консольку небольшую для проверки работы бд
 public class Console {
 
     private static final Scanner scanner = new Scanner(System.in);

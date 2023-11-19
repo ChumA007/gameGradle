@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class Connect {
 
+    //Подключение бд
     public static Connection connector() throws SQLException {
         String jdbcUrl = "jdbc:postgresql://localhost:5432/java-gradle--master";
         String username = "postgres";

@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+
+//асбстрактный класс для бдшных классов, которые будут наследоваться
 public abstract class DBC<T> {
 
     private Connection connection;

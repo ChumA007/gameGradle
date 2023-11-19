@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//Генератор данных для бд, также запускал отдельно через конфигурацию
 public class DataBaseEnter {
 
     private static Crud crud;
@@ -21,6 +23,7 @@ public class DataBaseEnter {
     public static void main(String[] args) throws SQLException {
 
         Statement statement = Connect.connector().createStatement();
+        //очищаем бд перед заполнением
         String truncateQuery = "TRUNCATE TABLE balance, health, inventory, item, level, medicalKit, players, quests, skills, weapon";
         statement.execute(truncateQuery);
         System.out.println("Database cleared.");
