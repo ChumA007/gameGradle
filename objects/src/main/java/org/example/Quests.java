@@ -4,9 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Quests {
+    private int id;
     private List<Quest> quests;
 
     public Quests() {
+        this.id = id;
+        quests = new ArrayList<>();
+    }
+
+    public Quests(int playerId) {
+        this.id = id;
         quests = new ArrayList<>();
     }
 
@@ -15,7 +22,8 @@ public class Quests {
     }
 
     public void addQuest(Quest quest) {
-        quests.add(quest);
+        if (quest != null)
+            quests.add(quest);
     }
 
     public void removeQuest(Quest quest) {

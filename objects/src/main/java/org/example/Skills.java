@@ -1,11 +1,13 @@
 package org.example;
 
 public class Skills {
+    private int id;
     private int strength;
     private int endurance;
     private int perception;
 
-    public Skills(int strength, int endurance, int perception) {
+    public Skills(int id, int strength, int endurance, int perception) {
+        this.id = id;
         this.strength = strength;
         this.endurance = endurance;
         this.perception = perception;

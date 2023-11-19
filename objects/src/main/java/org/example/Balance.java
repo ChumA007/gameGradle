@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Balance {
+
+    private int id;
     private List<Money> moneyList;
 
-    public Balance() {
+    public Balance(int id) {
+        this.id = id;
         this.moneyList = new ArrayList<>();
     }
 
@@ -34,5 +37,21 @@ public class Balance {
             result.append(String.format("      %s: %.2f %s\n", money.getName(), money.getAmount(), money.getName()));
         }
         return result.toString();
+    }
+
+    public List<Money> getMoneyList() {
+        return moneyList;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setMoneyList(List<Money> moneyList) {
+        this.moneyList = moneyList;
     }
 }

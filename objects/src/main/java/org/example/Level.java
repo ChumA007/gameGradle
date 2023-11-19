@@ -1,11 +1,13 @@
 package org.example;
 
 public class Level {
+    private int id;
     private int level;
     private int experience;
     private static final int EXPERIENCE_PER_LEVEL = 1000; // Количество опыта для поднятия уровня
 
-    public Level(int initialLevel, int initialExperience) {
+    public Level(int id, int initialLevel, int initialExperience) {
+        this.id = id;
         this.level = initialLevel;
         this.experience = initialExperience;
         updateLevel();

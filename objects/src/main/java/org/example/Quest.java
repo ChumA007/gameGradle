@@ -1,19 +1,21 @@
 package org.example;
 
-import java.time.LocalDate;
-
 public class Quest {
+    private int id;
     private String name;
     private String description;
     private int deadline;
     private boolean isCompleted;
 
-    public Quest(String name, String description, int deadline) {
+    public Quest(int id, String name, String description, int deadline, boolean isCompleted) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.deadline = deadline;
         this.isCompleted = false;
     }
+
+
 
     public Quest () {}
 

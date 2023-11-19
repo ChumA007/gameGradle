@@ -10,12 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.5")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation(project(mapOf("path" to ":objects")))
-    implementation(project(mapOf("path" to ":generator")))
-    implementation(project(mapOf("path" to ":serialize")))
-    implementation(project(mapOf("path" to ":deserialize")))
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("org.postgresql:postgresql:42.6.0")

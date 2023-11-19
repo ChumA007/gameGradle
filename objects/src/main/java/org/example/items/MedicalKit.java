@@ -1,10 +1,12 @@
 package org.example.items;
 
 public class MedicalKit extends Item {
+
+    private int itemId;
     private int healingPower;
 
-    public MedicalKit(String name, double weight, int widthInCells, int lengthInCells, int durability, int healingPower) {
-        super(name, weight, widthInCells, lengthInCells, durability);
+    public MedicalKit(int itemId, String name, double weight, int widthInCells, int lengthInCells, int durability, int healingPower) {
+        super(itemId, name, weight, widthInCells, lengthInCells, durability);
         this.healingPower = healingPower;
     }
 
@@ -34,4 +36,5 @@ public class MedicalKit extends Item {
     public String toString(){
         return super.toString() + ", healing power: " + this.healingPower + ")\n";
     }
+
 }

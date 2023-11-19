@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Health {
+    private int id;
     private int currentHealth;
     private int maxHealth;
 
-    public Health(int currentHealth, int maxHealth) {
+    public Health(int id, int currentHealth, int maxHealth) {
+        this.id = id;
         this.maxHealth = maxHealth;
         this.currentHealth = currentHealth;
     }
@@ -60,5 +62,13 @@ public class Health {
 
     public String toString(){
         return "Current health: " + this.currentHealth + " Max health: " + this.maxHealth + "\n";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

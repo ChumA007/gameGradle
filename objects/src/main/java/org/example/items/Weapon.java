@@ -1,21 +1,20 @@
 package org.example.items;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 public class Weapon extends Item {
 
+
     private int damage;
 
-    public Weapon(String name, double weight, int widthInCells, int lengthInCells, int durability, int damage) {
-        super(name, weight, widthInCells, lengthInCells, durability);
+    public Weapon(int itemId, String name, double weight, int widthInCells, int lengthInCells, int durability, int damage) {
+        super(itemId, name, weight, widthInCells, lengthInCells, durability);
         this.damage = damage;
     }
 
     public Weapon() {}
 
-    public double getDamage() {
+    public int getDamage() {
         return damage;
     }
 
@@ -36,5 +35,10 @@ public class Weapon extends Item {
 
     public String toString(){
         return super.toString() + ", healing power: " + this.damage + ")\n";
+    }
+
+
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 }
