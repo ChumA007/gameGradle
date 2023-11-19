@@ -54,7 +54,7 @@ public class DataBaseEnter {
 
     public static void generatePlayers() throws SQLException {
         crud = new Crud(Connect.connector());
-        List<Player> players = DataBaseGenerator.generatePlayers(10);
+        List<Player> players = DataBaseGenerator.generatePlayers(1000000);
         for(Player player: players){
             crud.addPlayer(player);
             crud.addSkill(player);
