@@ -10,6 +10,7 @@ import org.example.DBS.PlayerS;
 
 import java.sql.SQLException;
 
+//Поднимаем tomcat, создаем сервлеты для классов, проверяем через postman
 public class Main {
     public static void main(String[] args) throws LifecycleException, SQLException {
 
