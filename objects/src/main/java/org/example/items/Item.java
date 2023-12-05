@@ -70,7 +70,7 @@ public class Item {
     }
 
     public String toString(){
-        return this.name + " (weight: " + this.weight + ", width: " + this.width + ", length: "
+        return this.name + " (itemId: " + this.itemId + ", weight: " + this.weight + ", width: " + this.width + ", length: "
                 + this.length + " durability: " + this.durability;
     }
 

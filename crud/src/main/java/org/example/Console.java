@@ -176,7 +176,10 @@ public class Console {
             crud = new Crud(Connect.connector());
             System.out.println("Nickname: ");
             String name = scanner.next();
-            crud.findPlayer(name);
+            List<Player> players = crud.findPlayer(name);
+            for (Player p : players){
+                System.out.println(p.toString());
+            }
             start();
         } catch (SQLException e){
             e.printStackTrace();
@@ -187,9 +190,9 @@ public class Console {
         try{
             crud = new Crud(Connect.connector());
             System.out.println("Enter the id: ");
-            int itemId = scanner.nextInt();
-            if(crud.findWeapon(itemId) != null){
-                System.out.println(crud.findWeapon(itemId).toString());
+            int id = scanner.nextInt();
+            if(crud.findWeapon(id) != null){
+                System.out.println(crud.findWeapon(id).toString());
             } else {
                 System.out.println("Weapon not found");
             }

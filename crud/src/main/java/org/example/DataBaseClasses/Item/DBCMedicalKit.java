@@ -1,5 +1,6 @@
 package org.example.DataBaseClasses.Item;
 
+import org.example.Connect;
 import org.example.items.Item;
 import org.example.items.MedicalKit;
 import org.example.items.Weapon;
@@ -40,6 +41,12 @@ public class DBCMedicalKit extends DBCItem{
 
         String sql = "INSERT INTO medicalKit (itemId, healingPower) VALUES (?,?)";
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            DBCItem dbcItem = new DBCItem(Connect.connector());
+            Item item = dbcItem.findItemById(medicalKit.getItemId());
+            if (item == null) {
+                dbcItem.addItem(medicalKit.getItemId(), medicalKit.getName(), medicalKit.getWeight(), medicalKit.getWidth(),
+                        medicalKit.getLength(), medicalKit.getDurability());
+            }
             statement.setInt(1, medicalKit.getItemId());
             statement.setInt(2, medicalKit.getHealingPower());
             statement.executeUpdate();
@@ -49,7 +56,7 @@ public class DBCMedicalKit extends DBCItem{
         }
     }
 
-    public MedicalKit findMedicalKitByName(String name){
+    public MedicalKit findWeaponByName(String name){
         String sql = "SELECT * FROM medicalKit WHERE itemId = ?";
         DBCItem dbcItem = new DBCItem(getConnection());
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
@@ -57,11 +64,9 @@ public class DBCMedicalKit extends DBCItem{
             statement.setInt(1, itemId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    MedicalKit medicalKit = new MedicalKit(resultSet.getInt("itemId"), name,
-                            resultSet.getDouble("weight"),
-                            resultSet.getInt("width"),
-                            resultSet.getInt("length"),
-                            resultSet.getInt("durability"),
+                    Item item = findItemById(itemId);
+                    MedicalKit medicalKit = new MedicalKit(resultSet.getInt("itemId"), name, item.getWeight(),
+                            item.getWidth(), item.getLength(), item.getDurability(),
                             resultSet.getInt("healingPower"));
                     return medicalKit;
                 } else {
@@ -157,25 +162,23 @@ public class DBCMedicalKit extends DBCItem{
         DBCItem dbcItem = new DBCItem(getConnection());
         dbcItem.deleteItem(itemId);
     }
+
     @Override
-    public List<MedicalKit> getAll() throws SQLException {
+    public List getAll(){
         String sql = "SELECT * FROM medicalKit";
-        DBCItem dbcItem = new DBCItem(getConnection());
         List<MedicalKit> medicalKits = new ArrayList<>();
         try (PreparedStatement statement = getConnection().prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                String name = dbcItem.findItemById(resultSet.getInt("itemId")).getName();
-                MedicalKit medicalKit = new MedicalKit(resultSet.getInt("itemId"), name,
-                        resultSet.getDouble("weight"),
-                        resultSet.getInt("width"),
-                        resultSet.getInt("length"),
-                        resultSet.getInt("durability"),
+                int itemId = resultSet.getInt("itemId");
+                Item item = findItemById(itemId);
+                MedicalKit medicalKit = new MedicalKit(itemId, item.getName(), item.getWeight(),
+                        item.getWidth(), item.getLength(), item.getDurability(),
                         resultSet.getInt("healingPower"));
                 medicalKits.add(medicalKit);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return medicalKits;
     }

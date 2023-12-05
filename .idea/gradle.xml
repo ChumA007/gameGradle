@@ -9,11 +9,13 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/DBServlets" />
             <option value="$PROJECT_DIR$/crud" />
             <option value="$PROJECT_DIR$/deserialize" />
             <option value="$PROJECT_DIR$/generator" />
             <option value="$PROJECT_DIR$/objects" />
             <option value="$PROJECT_DIR$/serialize" />
+            <option value="$PROJECT_DIR$/servlets" />
           </set>
         </option>
       </GradleProjectSettings>

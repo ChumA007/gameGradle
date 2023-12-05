@@ -34,7 +34,7 @@ public class Weapon extends Item {
     }
 
     public String toString(){
-        return super.toString() + ", healing power: " + this.damage + ")\n";
+        return super.toString() + ", damage: " + this.damage + ")\n";
     }
 
 

@@ -10,6 +10,7 @@ import org.example.items.Weapon;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Crud {
@@ -64,8 +65,8 @@ public class Crud {
         dbcSkills.addSkills(player);
     }
 
-    public void findPlayer(String name){
-        dbcPlayers.findPlayerByName(name);
+    public List<Player> findPlayer(String name){
+        return dbcPlayers.findPlayerByName(name);
     }
 
     public Player findPlayer(int id) throws SQLException {
@@ -76,14 +77,22 @@ public class Crud {
         return dbcWeapon.findWeaponById(itemId);
     }
 
+    public Weapon findWeaponByName(String name) {return  dbcWeapon.findWeaponByName(name);}
+
     public MedicalKit findMedicalKit(int itemId){
         return dbcMedicalKit.findMedicalKitById1(itemId);
     }
+
+    public MedicalKit findMedicalKitByName(String name) {return  dbcMedicalKit.findWeaponByName(name);}
 
     public void updatePlayer(int id, String name, int level, int experience, int strength, int endurance, int perception) throws SQLException {
         dbcPlayers.updatePlayer(id, name);
         dbcSkills.updateSkills(id, strength, endurance, perception);
         dbcLevel.updateLevel(id, level, experience);
+    }
+
+    public void updatePlayer(int id, String name){
+        dbcPlayers.updatePlayer(id, name);
     }
 
     public void updateWeapon(int id, int durability){
@@ -138,5 +147,4 @@ public class Crud {
     public List<Quest> getAllSkills() throws SQLException {
         return dbcQuests.getAll();
     }
-
 }

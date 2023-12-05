@@ -54,8 +54,9 @@ public class DBCPlayers extends DBC {
         dbcLevel.addLevel(player.getId(), player.getLevel().getLevel(), player.getLevel().getExperience());
     }
 
-    public void findPlayerByName(String name){
+    public ArrayList<Player> findPlayerByName(String name){
         String sql = "SELECT * FROM players WHERE nickname = ?";
+        ArrayList<Player> players = new ArrayList<>();
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             statement.setString(1, name);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -67,12 +68,13 @@ public class DBCPlayers extends DBC {
                     player.setInventory(getInventoryForPlayer(player.getId()));
                     player.setLevel(getLevelForPlayer(player.getId()));
                     player.setSkills(getSkillsForPlayer(player.getId()));
-                    System.out.println(player.toString());
+                    players.add(player);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return players;
     }
 
     public Player findPlayerById(int id) throws SQLException {

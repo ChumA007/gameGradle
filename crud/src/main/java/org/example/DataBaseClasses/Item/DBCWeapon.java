@@ -55,10 +55,34 @@ public class DBCWeapon extends DBCItem{
 
         String sql = "INSERT INTO weapon (itemId, damage) VALUES (?,?)";
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            DBCItem dbcItem = new DBCItem(Connect.connector());
+            Item item = dbcItem.findItemById(weapon.getItemId());
+            if (item == null) {
+                dbcItem.addItem(weapon.getItemId(), weapon.getName(), weapon.getWeight(), weapon.getWidth(),
+                        weapon.getLength(), weapon.getDurability());
+            }
             statement.setInt(1, weapon.getItemId());
             statement.setInt(2, weapon.getDamage());
             statement.executeUpdate();
             System.out.println("Добавление успешно!");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Weapon findWeaponByName(String name){
+        String sql = "SELECT * FROM weapon WHERE itemId = ?";
+        DBCItem dbcItem = new DBCItem(getConnection());
+        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
+            int itemId = dbcItem.findItemByName(name);
+            System.out.println("1");
+            statement.setInt(1, itemId);
+            System.out.println("2");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                    Weapon weapon = findWeaponById(itemId);
+                    return weapon;
+
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -144,24 +168,21 @@ public class DBCWeapon extends DBCItem{
     }
 
     @Override
-    public List<Weapon> getAll() throws SQLException {
+    public List getAll(){
         String sql = "SELECT * FROM weapon";
-        DBCItem dbcItem = new DBCItem(getConnection());
         List<Weapon> weapons = new ArrayList<>();
         try (PreparedStatement statement = getConnection().prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                String name = dbcItem.findItemById(resultSet.getInt("itemId")).getName();
-                Weapon weapon = new Weapon(resultSet.getInt("itemId"), name,
-                        resultSet.getDouble("weight"),
-                        resultSet.getInt("width"),
-                        resultSet.getInt("length"),
-                        resultSet.getInt("durability"),
+                int itemId = resultSet.getInt("itemId");
+                Item item = findItemById(itemId);
+                Weapon weapon1 = new Weapon(itemId, item.getName(), item.getWeight(),
+                        item.getWidth(), item.getLength(), item.getDurability(),
                         resultSet.getInt("damage"));
-                weapons.add(weapon);
+                weapons.add(weapon1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return weapons;
     }
