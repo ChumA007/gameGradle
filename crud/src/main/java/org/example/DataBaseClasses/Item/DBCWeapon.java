@@ -138,23 +138,28 @@ public class DBCWeapon extends DBCItem{
     }
 
     public void updateWeapon(Weapon weapon){
-        String sql = "UPDATE weapon SET itemId = ?, name = ?, weigth = ?, width = ?, length = ?, durability = ?, damage = ? WHERE id = ?";
-        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setInt(1, weapon.getItemId());
-            statement.setString(2, weapon.getName());
-            statement.setDouble(3, weapon.getWeight());
-            statement.setInt(4, weapon.getWidth());
-            statement.setInt(5, weapon.getLength());
-            statement.setInt(6, weapon.getDurability());
-            statement.setInt(7, weapon.getDamage());
-            statement.executeUpdate();
+        String itemSql = "UPDATE item SET name = ?, weight = ?, width = ?, length = ?, durability = ? WHERE itemId = ?";
+        String weaponSql = "UPDATE weapon SET damage = ? WHERE itemId = ?";
+        try (PreparedStatement itemStatement = getConnection().prepareStatement(itemSql);
+             PreparedStatement weaponStatement = getConnection().prepareStatement(weaponSql)) {
+            itemStatement.setString(1, weapon.getName());
+            itemStatement.setDouble(2, weapon.getWeight());
+            itemStatement.setInt(3, weapon.getWidth());
+            itemStatement.setInt(4, weapon.getLength());
+            itemStatement.setInt(5, weapon.getDurability());
+            itemStatement.setInt(6, weapon.getItemId());
+            itemStatement.executeUpdate();
+
+            weaponStatement.setInt(1, weapon.getDamage());
+            weaponStatement.setInt(2, weapon.getItemId());
+            weaponStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void deleteWeapon(int id) throws SQLException {
-        String sql = "DELETE FROM weapon WHERE id = ?";
+        String sql = "DELETE FROM weapon WHERE itemId = ?";
         int itemId = findWeaponById(id).getItemId();
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             statement.setInt(1, id);

@@ -80,10 +80,10 @@ public class Crud {
     public Weapon findWeaponByName(String name) {return  dbcWeapon.findWeaponByName(name);}
 
     public MedicalKit findMedicalKit(int itemId){
-        return dbcMedicalKit.findMedicalKitById1(itemId);
+        return dbcMedicalKit.findMedicalKitById(itemId);
     }
 
-    public MedicalKit findMedicalKitByName(String name) {return  dbcMedicalKit.findWeaponByName(name);}
+    public MedicalKit findMedicalKitByName(String name) {return  dbcMedicalKit.findMedicalKitByName(name);}
 
     public void updatePlayer(int id, String name, int level, int experience, int strength, int endurance, int perception) throws SQLException {
         dbcPlayers.updatePlayer(id, name);

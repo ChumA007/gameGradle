@@ -24,9 +24,16 @@ public class DBCPlayers extends DBC {
     }
 
     public void addPlayer(String nickname) throws SQLException {
-        String sql = "INSERT INTO players (nickname) VALUES (?)";
+        String sql = "INSERT INTO players (id, nickname) VALUES (?,?)";
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setString(1, nickname);
+            Random random = new Random();
+            int id = random.nextInt();
+            statement.setInt(1, id);
+            statement.setString(2, nickname);
+            DBCSkills dbcSkills = new DBCSkills(Connect.connector());
+            dbcSkills.addSkills(id, 0, 0, 0);
+            DBCHealth dbcHealth = new DBCHealth(Connect.connector());
+            dbcHealth.addHealth(id, 100, 100);
             statement.executeUpdate();
             System.out.println("Успешно");
         }

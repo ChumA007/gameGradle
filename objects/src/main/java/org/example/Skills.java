@@ -2,9 +2,9 @@ package org.example;
 
 public class Skills {
     private int id;
-    private int strength;
-    private int endurance;
-    private int perception;
+    private int strength = 0;
+    private int endurance = 0;
+    private int perception = 0;
 
     public Skills(int id, int strength, int endurance, int perception) {
         this.id = id;
@@ -13,7 +13,8 @@ public class Skills {
         this.perception = perception;
     }
 
-    public Skills (){}
+    public Skills (){
+    }
 
     public int getStrength() {
         return strength;
@@ -52,6 +53,6 @@ public class Skills {
     }
 
     public String toString() {
-        return "Skills: " + "Strength: " + strength + ", Endurance: " + endurance + ", Perception: " + perception + "\n";
+        return "Skills: " + "Strength: " + ", Endurance: " + endurance + ", Perception: " + perception + "\n";
     }
 }

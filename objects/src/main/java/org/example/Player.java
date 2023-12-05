@@ -96,7 +96,8 @@ public class Player {
 
     public String toString(){
         return "\nPlayer id: " + this.id + "\nNickname: " + this.nickname +
-                "\nQuests:\n" + this.quests.toString() + this.skills.toString() + this.inventory.toString() +
-                this.health.toString() + this.balance.toString();
+                "\nQuests:\n" + this.quests.toString() + (this.skills != null ? this.skills.toString() : "-")
+                + this.inventory.toString() +
+                this.health.toString() + (this.balance != null ? this.balance.toString() : "Balance: 0");
     }
 }

@@ -3,7 +3,6 @@ package org.example.DataBaseClasses.Item;
 import org.example.Connect;
 import org.example.items.Item;
 import org.example.items.MedicalKit;
-import org.example.items.Weapon;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -56,53 +55,47 @@ public class DBCMedicalKit extends DBCItem{
         }
     }
 
-    public MedicalKit findWeaponByName(String name){
-        String sql = "SELECT * FROM medicalKit WHERE itemId = ?";
+    public MedicalKit findMedicalKitByName(String name){
+        String sql = "SELECT * FROM MedicalKit WHERE itemId = ?";
         DBCItem dbcItem = new DBCItem(getConnection());
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             int itemId = dbcItem.findItemByName(name);
+            System.out.println("1");
             statement.setInt(1, itemId);
+            System.out.println("2");
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Item item = findItemById(itemId);
-                    MedicalKit medicalKit = new MedicalKit(resultSet.getInt("itemId"), name, item.getWeight(),
-                            item.getWidth(), item.getLength(), item.getDurability(),
-                            resultSet.getInt("healingPower"));
-                    return medicalKit;
-                } else {
-                    return null;
-                }
+                MedicalKit MedicalKit = findMedicalKitById(itemId);
+                return MedicalKit;
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public MedicalKit findMedicalKitById(int id){
-        String sql = "SELECT * FROM medicalKit WHERE mdId = ?";
-        DBCItem dbcItem = new DBCItem(getConnection());
+    public MedicalKit findMedicalKitById(int itemId){
+        String sql = "SELECT * FROM medicalKit WHERE itemId = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setInt(1, itemId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    String name = dbcItem.findItemById(resultSet.getInt("itemId")).getName();
-                    MedicalKit medicalKit = new MedicalKit(resultSet.getInt("itemId"), name,
-                            resultSet.getDouble("weight"),
-                            resultSet.getInt("width"),
-                            resultSet.getInt("length"),
-                            resultSet.getInt("durability"),
-                            resultSet.getInt("healingPower"));
-                    return medicalKit;
-                } else {
-                    return null;
+                    if(findItemById(itemId) != null) {
+                        Item item = findItemById(itemId);
+                        MedicalKit MedicalKit1 = new MedicalKit(itemId, item.getName(), item.getWeight(),
+                                item.getWidth(), item.getLength(), item.getDurability(),
+                                resultSet.getInt("healingPower"));
+                        return MedicalKit1;
+                    }
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
+    
     public void updateMedicalKit(int id, int healingPower){
-        String sql = "UPDATE medicalKit SET damage = ? WHERE mdId = ?";
+        String sql = "UPDATE medicalKit SET healinPower = ? WHERE itemId = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             statement.setInt(1, healingPower);
             statement.setInt(2, id);
@@ -112,50 +105,34 @@ public class DBCMedicalKit extends DBCItem{
         }
     }
 
-    public MedicalKit findMedicalKitById1(int itemId){
-        String sql = "SELECT * FROM medicalKit WHERE itemId = ?";
-        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setInt(1, itemId);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    if(findItemById(itemId) != null) {
-                        Item item = findItemById(itemId);
-                        MedicalKit medicalKit = new MedicalKit(itemId, item.getName(),
-                                item.getWeight(), item.getWidth(), item.getLength(), item.getDurability(),
-                                resultSet.getInt("healingPower"));
-                        return medicalKit;
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
     public void updateMedicalKit(MedicalKit medicalKit){
-        String sql = "UPDATE medicalKit SET itemId = ?, name = ?, weigth = ?, width = ?, length = ?, durability = ?, healingPower = ? WHERE id = ?";
-        try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
-            statement.setInt(1, medicalKit.getItemId());
-            statement.setString(2, medicalKit.getName());
-            statement.setDouble(3, medicalKit.getWeight());
-            statement.setInt(4, medicalKit.getWidth());
-            statement.setInt(5, medicalKit.getLength());
-            statement.setInt(6, medicalKit.getDurability());
-            statement.setInt(7, medicalKit.getHealingPower());
-            statement.executeUpdate();
+        String itemSql = "UPDATE item SET name = ?, weight = ?, width = ?, length = ?, durability = ? WHERE itemId = ?";
+        String medicalKitSql = "UPDATE medicalKit SET healingPower = ? WHERE itemId = ?";
+        try (PreparedStatement itemStatement = getConnection().prepareStatement(itemSql);
+             PreparedStatement medicalKitStatement = getConnection().prepareStatement(medicalKitSql)) {
+            itemStatement.setString(1, medicalKit.getName());
+            itemStatement.setDouble(2, medicalKit.getWeight());
+            itemStatement.setInt(3, medicalKit.getWidth());
+            itemStatement.setInt(4, medicalKit.getLength());
+            itemStatement.setInt(5, medicalKit.getDurability());
+            itemStatement.setInt(6, medicalKit.getItemId());
+            itemStatement.executeUpdate();
+
+            medicalKitStatement.setInt(1, medicalKit.getHealingPower());
+            medicalKitStatement.setInt(2, medicalKit.getItemId());
+            medicalKitStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void deleteMedicalKit(int id) throws SQLException {
-        String sql = "DELETE FROM medicalKit WHERE mdId = ?";
+        String sql = "DELETE FROM medicalKit WHERE itemId = ?";
         int itemId = findMedicalKitById(id).getItemId();
         try (PreparedStatement statement = getConnection().prepareStatement(sql)) {
             statement.setInt(1, id);
             statement.executeUpdate();
-            System.out.println("Набор первой помощи удалена!");
+            System.out.println("Набор первой помощи удален!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
